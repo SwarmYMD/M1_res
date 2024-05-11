@@ -1,16 +1,15 @@
 import java.util.*;
 import Constants;
-import origin_env.Variable;
 
 public class Agent {
     public int col;
     public int row;
     public String state;
 
-    public double[][] expPherMatrix = new double[Variable.H][Variable.W];
-    public double[][] expIndicMatrix = new double[Variable.H][Variable.W];
-    public double[][] disPherMatrix = new double[Variable.n][Variable.m];
-    public double[][] disIndicMatrix = new double[Variable.n][Variable.m];
+    public double[][] expPherMatrix = new double[Constants.H][Constants.W];
+    public double[][] expIndicMatrix = new double[Constants.H][Constants.W];
+    public double[][] disPherMatrix = new double[Constants.n][Constants.m];
+    public double[][] disIndicMatrix = new double[Constants.n][Constants.m];
 
     public int areaNo;
 
@@ -29,14 +28,14 @@ public class Agent {
         this.row = r;
         this.state = "e";
 
-        for(int i=0; i<Variable.H; i++){
-            for(int j=0; j<Variable.W; j++){
+        for(int i=0; i<Constants.H; i++){
+            for(int j=0; j<Constants.W; j++){
                 expPherMatrix[i][j] = 0;
                 expIndicMatrix[i][j] = 0;
             }
         }
-        for(int i=0; i<Variable.n; i++){
-            for(int j=0; j<Variable.m; j++){
+        for(int i=0; i<Constants.n; i++){
+            for(int j=0; j<Constants.m; j++){
                 disPherMatrix[i][j] = 0;
                 disIndicMatrix[i][j] = 0;
             }
