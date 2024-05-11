@@ -1,5 +1,4 @@
 import java.util.*;
-import Constants;
 
 public class Agent {
     public int col;
@@ -48,7 +47,7 @@ public class Agent {
         this.pld_col = 0;
         this.pld_row = 0;
 
-        this.delta_tau = 0.0;
+        this.delta_tau = 1.0;
         this.sum_pher = 0.0;
     }
 

@@ -1,7 +1,5 @@
 import java.util.*;
 
-import Constants;
-
 public class Grid {
     public int h;
     public int w;
