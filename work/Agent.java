@@ -11,6 +11,7 @@ public class Agent {
     public double[][] disIndicMatrix = new double[Constants.n][Constants.m];
 
     public int areaNo;
+    public int next_area;
 
     public int d_exp;
     public int d_dis;
@@ -21,6 +22,8 @@ public class Agent {
 
     public double delta_tau;
     public double sum_pher;
+
+    public int length_move;
 
     public Agent(int r, int c){
         this.col = c;
@@ -41,6 +44,7 @@ public class Agent {
         }
 
         this.areaNo = c / Constants.W + (r / Constants.H) * Constants.m;
+        this.next_area = -1;
 
         this.d_exp = 0;
         this.d_dis = 0;
@@ -49,6 +53,8 @@ public class Agent {
 
         this.delta_tau = 1.0;
         this.sum_pher = 0.0;
+
+        this.length_move = 0;
     }
 
     public int getAreaNo(int row, int col){

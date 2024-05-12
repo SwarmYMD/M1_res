@@ -11,7 +11,7 @@ public class Constants{
     public static final int AGENT_NUM = 500;
     
     // paramaters of this system
-    public static final int T_max = 100;
+    public static final int T_max = 1000;
     public static final double alpha = 0.9;
     public static final double c = 0.8;
     public static final double Q = 1.0;
@@ -24,6 +24,8 @@ public class Constants{
     public static final double c_2 = 1.0;
     public static final int T = 10;
     public static final double S_g = 0.9;
+
+    public static int speed = 3;
 
     public static final int[] dir_row = {-1, 1, 0, 0};
     public static final int[] dir_col = {0, 0, -1, 1};
