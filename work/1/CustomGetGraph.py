@@ -566,7 +566,7 @@ def getGraph():
     plt.close()
     """
 
-    for k in range(final_step):
+    for k in range(final_step+1):
         fig=plt.figure(figsize=(7,7))
         ax=plt.axes()
 

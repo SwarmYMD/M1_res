@@ -571,18 +571,17 @@ public class Test {
                     indicator[j] = 0;
                 }
             }
+        }
+        int maxIndex = maxIndex2(indicator);
+        int next_r = r.row + Constants.dir_row[maxIndex];
+        int next_c = r.col + Constants.dir_col[maxIndex];
 
-            int maxIndex = maxIndex2(indicator);
-            int next_r = r.row + Constants.dir_row[maxIndex];
-            int next_c = r.col + Constants.dir_col[maxIndex];
-
-            if(grid.agent_pos[next_r][next_c] != 1){
-                grid.deletePos(r);
-                r.row = next_r;
-                r.col = next_c;
-                grid.recordPos(r);
-                r.not_move_count = -1;
-            }
+        if(grid.agent_pos[next_r][next_c] != 1){
+            grid.deletePos(r);
+            r.row = next_r;
+            r.col = next_c;
+            grid.recordPos(r);
+            r.not_move_count = -1;
         }
     }
 
