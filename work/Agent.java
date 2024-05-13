@@ -25,6 +25,8 @@ public class Agent {
 
     public int length_move;
 
+    int not_move_count;
+
     public Agent(int r, int c){
         this.col = c;
         this.row = r;
@@ -55,6 +57,8 @@ public class Agent {
         this.sum_pher = 0.0;
 
         this.length_move = 0;
+
+        this.not_move_count = 0;
     }
 
     public int getAreaNo(int row, int col){
