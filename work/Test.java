@@ -95,8 +95,12 @@ public class Test {
 
                         
                         if(agents[j].state.equals("t")){
-                            // stop
+                            // enhance neighbor and sometimes move
                             enhance(grid, agents[j], agents);
+                            if(agents[j].not_move_count >= 5){
+                                move(grid, agents[j], agents);
+                            }
+                            agents[j].not_move_count++;
                         }else if(agents[j].state.equals("e")){
                             // exploration
                             exploration(grid, agents[j], agents);
@@ -455,6 +459,8 @@ public class Test {
             } else {
                 plan_dis(grid, r, agents);
             }
+        } else {
+            plan_dis(grid, r, agents);
         }
 
         if(r.length_move != 0){
@@ -551,6 +557,35 @@ public class Test {
         }
     }
 
+    public static void move(Grid grid, Agent r, Agent[] agents){
+        double[] indicator = new double[4]; 
+        for(int j = 0; j < 4; j++){
+            int a = r.row + Constants.dir_row[j];
+            int b = r.col + Constants.dir_col[j];
+
+            int dis = 1;
+            if(a >= 0 && a < Constants.N && b >= 0 && b < Constants.M){
+                if(grid.agent_pos[a][b] != 1){
+                    indicator[j] = Math.exp(grid.expPherData[a][b]) / dis;
+                }else{
+                    indicator[j] = 0;
+                }
+            }
+
+            int maxIndex = maxIndex2(indicator);
+            int next_r = r.row + Constants.dir_row[maxIndex];
+            int next_c = r.col + Constants.dir_col[maxIndex];
+
+            if(grid.agent_pos[next_r][next_c] != 1){
+                grid.deletePos(r);
+                r.row = next_r;
+                r.col = next_c;
+                grid.recordPos(r);
+                r.not_move_count = -1;
+            }
+        }
+    }
+
     public static int maxIndex(double[][] indic){
         double max = 0;
         List<Integer> maxIndexList = new ArrayList<Integer>();
@@ -568,6 +603,26 @@ public class Test {
                     maxIndexList.add(i*indic[i].length + j);
                 } 
             }
+        }
+
+        Collections.shuffle(maxIndexList);
+
+        return maxIndexList.get(0);
+    }
+
+    public static int maxIndex2(double[] indic){
+        double max = 0;
+        List<Integer> maxIndexList = new ArrayList<Integer>();
+        for(int i=0; i<indic.length; i++){
+            if(max < indic[i]){
+                max = indic[i];
+            } 
+        }
+
+        for(int i=0; i<indic.length; i++){
+            if(max == indic[i]){
+                maxIndexList.add(i);
+            } 
         }
 
         Collections.shuffle(maxIndexList);
