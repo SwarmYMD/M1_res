@@ -8,7 +8,7 @@ public class Constants{
     public static final int W = M/m;
     public static final int H = N/n;
     
-    public static final int AGENT_NUM = 5000;
+    public static final int AGENT_NUM = 1000;
     
     // paramaters of this system
     public static final int T_max = 100;

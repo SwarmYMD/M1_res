@@ -25,6 +25,8 @@ public class Agent {
 
     public int length_move;
 
+    public int dir_flag;
+
     int not_move_count;
 
     public Agent(int r, int c){
@@ -59,6 +61,8 @@ public class Agent {
         this.length_move = 0;
 
         this.not_move_count = 0;
+
+        this.dir_flag = 0;
     }
 
     public int getAreaNo(int row, int col){
