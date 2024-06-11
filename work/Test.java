@@ -18,6 +18,7 @@ public class Test {
             Grid grid = new Grid();
             Agent[] agents = new Agent[Constants.AGENT_NUM];
             FileWriter[] fw = new FileWriter[Constants.T_max];
+            FileWriter[] direction_recorder = new FileWriter[Constants.T_max];
 
             for(int i = 0 ; i < Constants.M * Constants.N ; i++) {
                 
@@ -59,9 +60,20 @@ public class Test {
                     f.append(String.valueOf(agents[j].col));
                     f.append(",");
                     f.append(String.valueOf(agents[j].row));
+                    f.append(",");
+                    f.append(String.valueOf(agents[j].dir_flag));
                     f.append("\n");
                 }
                 f.close();
+
+                /*
+                FileWriter dir = new FileWriter("./"+String.valueOf(n+1)+"/direction/step0.csv");
+                for (int j=0; j<Constants.AGENT_NUM; j++){
+                    dir.append(String.valueOf(agents[j].dir_flag));
+                    dir.append("\n");
+                }
+                dir.close();
+                */
 
                 for(int k=0; k<Constants.N; k++){
                     for(int s=0; s<Constants.M; s++){
@@ -159,10 +171,20 @@ public class Test {
                         fw[i].append(String.valueOf(agents[j].col));
                         fw[i].append(",");
                         fw[i].append(String.valueOf(agents[j].row));
+                        fw[i].append(",");
+                        fw[i].append(String.valueOf(agents[j].dir_flag));
                         fw[i].append("\n");
                     }
                     fw[i].close();
-                    
+
+                    /*
+                    direction_recorder[i] = new FileWriter("./"+String.valueOf(n+1)+"/direction/step"+String.valueOf(i+1)+".csv");
+                    for (int j=0; j<Constants.AGENT_NUM; j++){
+                        direction_recorder[i].append(String.valueOf(agents[j].dir_flag));
+                        direction_recorder[i].append("\n");
+                    }
+                    direction_recorder[i].close();
+                    */
                     
                     for(int k=0; k<Constants.N; k++){
                         for(int s=0; s<Constants.M; s++){
@@ -243,6 +265,7 @@ public class Test {
                     }
 
                 }
+                percent_recorder.close();
 
                 for(int k=0; k<Constants.N; k++){
                     for(int s=0; s<Constants.M; s++){
@@ -500,10 +523,12 @@ public class Test {
         dif_col = (area_c * Constants.W + Constants.W/2) - r.col;
         dif_row = (area_r * Constants.H + Constants.H/2) - r.row;
 
-        // I will add the pattern when these two values are "=" later. 
+        // I will add the pattern when these two values are "=" later.
+        
         if(Math.abs(dif_col) >= Math.abs(dif_row)){
             if(dif_col < 0){
                 if((r.col + Constants.dir_col[2]) >= 0){
+                    r.dir_flag = 1; // left
                     if(grid.agent_pos[r.row][r.col + Constants.dir_col[2]] != 1){
                         grid.deletePos(r);
                         r.col = r.col + Constants.dir_col[2];
@@ -512,6 +537,7 @@ public class Test {
                 }
             }else if(dif_col > 0){
                 if((r.col + Constants.dir_col[3]) <= Constants.M){
+                    r.dir_flag = 2; // right
                     if(grid.agent_pos[r.row][r.col + Constants.dir_col[3]] != 1){
                         grid.deletePos(r);
                         r.col = r.col + Constants.dir_col[3];
@@ -522,6 +548,7 @@ public class Test {
         }else{
             if(dif_row < 0){
                 if((r.row + Constants.dir_row[0]) >= 0){
+                    r.dir_flag = 3; // up
                     if(grid.agent_pos[r.row + Constants.dir_row[0]][r.col] != 1){
                         grid.deletePos(r);
                         r.row = r.row + Constants.dir_row[0];
@@ -530,6 +557,7 @@ public class Test {
                 }
             }else if(dif_row > 0){
                 if((r.row + Constants.dir_row[1]) <= Constants.N){
+                    r.dir_flag = 4; // down
                     if(grid.agent_pos[r.row + Constants.dir_row[1]][r.col] != 1){
                         grid.deletePos(r);
                         r.row = r.row + Constants.dir_row[1];
@@ -571,18 +599,17 @@ public class Test {
                     indicator[j] = 0;
                 }
             }
+        }
+        int maxIndex = maxIndex2(indicator);
+        int next_r = r.row + Constants.dir_row[maxIndex];
+        int next_c = r.col + Constants.dir_col[maxIndex];
 
-            int maxIndex = maxIndex2(indicator);
-            int next_r = r.row + Constants.dir_row[maxIndex];
-            int next_c = r.col + Constants.dir_col[maxIndex];
-
-            if(grid.agent_pos[next_r][next_c] != 1){
-                grid.deletePos(r);
-                r.row = next_r;
-                r.col = next_c;
-                grid.recordPos(r);
-                r.not_move_count = -1;
-            }
+        if(grid.agent_pos[next_r][next_c] != 1){
+            grid.deletePos(r);
+            r.row = next_r;
+            r.col = next_c;
+            grid.recordPos(r);
+            r.not_move_count = -1;
         }
     }
 
