@@ -264,6 +264,10 @@ public class Test {
                         }
                     }
 
+                    for (int j=0; j<Constants.AGENT_NUM; j++){
+                        agents[j].dir_flag = 0;
+                    }
+
                 }
                 percent_recorder.close();
 
@@ -365,6 +369,7 @@ public class Test {
         if(Math.abs(dif_col) >= Math.abs(dif_row)){
             if(dif_col < 0){
                 if((r.col + Constants.dir_col[2]) >= leftEnd){
+                    r.dir_flag = 1; // left
                     if(grid.agent_pos[r.row][r.col + Constants.dir_col[2]] != 1){
                         grid.deletePos(r);
                         r.col = r.col + Constants.dir_col[2];
@@ -373,6 +378,7 @@ public class Test {
                 }
             }else if(dif_col > 0){
                 if((r.col + Constants.dir_col[3]) <= rightEnd){
+                    r.dir_flag = 2; // right
                     if(grid.agent_pos[r.row][r.col + Constants.dir_col[3]] != 1){
                         grid.deletePos(r);
                         r.col = r.col + Constants.dir_col[3];
@@ -383,6 +389,7 @@ public class Test {
         }else{
             if(dif_row < 0){
                 if((r.row + Constants.dir_row[0]) >= upperEnd){
+                    r.dir_flag = 3; // up
                     if(grid.agent_pos[r.row + Constants.dir_row[0]][r.col] != 1){
                         grid.deletePos(r);
                         r.row = r.row + Constants.dir_row[0];
@@ -391,6 +398,7 @@ public class Test {
                 }
             }else if(dif_row > 0){
                 if((r.row + Constants.dir_row[1]) <= lowerEnd){
+                    r.dir_flag = 4; // down
                     if(grid.agent_pos[r.row + Constants.dir_row[1]][r.col] != 1){
                         grid.deletePos(r);
                         r.row = r.row + Constants.dir_row[1];
