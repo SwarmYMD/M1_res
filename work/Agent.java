@@ -4,6 +4,7 @@ public class Agent {
     public int col;
     public int row;
     public String state;
+    public int number;
 
     public double[][] expPherMatrix = new double[Constants.H][Constants.W];
     public double[][] expIndicMatrix = new double[Constants.H][Constants.W];
@@ -33,6 +34,7 @@ public class Agent {
         this.col = c;
         this.row = r;
         this.state = "e";
+        this.number = 0;
 
         for(int i=0; i<Constants.H; i++){
             for(int j=0; j<Constants.W; j++){
