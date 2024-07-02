@@ -263,7 +263,9 @@ public class RandomMove {
 
                     for (int j=0; j<Constants.AGENT_NUM; j++){
                         ag = agentList.get(j);
-                        ag.dir_flag = 0;
+                        if(i != Constants.T_max-1){
+                            ag.dir_flag = 0;
+                        }
                         agentList.set(j, ag);
                     }
 
@@ -277,6 +279,69 @@ public class RandomMove {
                     System.out.println();
                 }
                 System.out.println();
+
+                /*
+
+                for(int k=0; k<Constants.n; k++){
+                    for(int s=0; s<Constants.m; s++){
+                        System.out.printf("%2.2f, ", grid.disPherData[k][s]);
+                    }
+                    System.out.println();
+                }
+                System.out.println();
+
+                for(int k=0; k<Constants.n; k++){
+                    for(int s=0; s<Constants.m; s++){
+                        System.out.printf("%2.3f, ", agentList.get(0).disIndicMatrix[k][s]);
+                    }
+                    System.out.println();
+                }
+                System.out.println();
+
+                for(int k=0; k<Constants.n; k++){
+                    for(int s=0; s<Constants.m; s++){
+                        System.out.printf("%d, ", Math.abs(agentList.get(0).row - (k*Constants.H + Constants.H/2 )) + Math.abs(agentList.get(0).col - (s*Constants.W + Constants.W/2 )));
+                    }
+                    System.out.println();
+                }
+                System.out.println();
+
+                int[][] dir_list = new int[Constants.N][Constants.M];
+                String[][] state_list = new String[Constants.N][Constants.M];
+
+                for(int k=0; k<Constants.N; k++){
+                    for(int s=0; s<Constants.M; s++){
+                        dir_list[k][s] = 0;
+                        state_list[k][s] = "0";
+                    }
+                }
+                
+                for (int j=0; j<Constants.AGENT_NUM; j++){
+                    ag = agentList.get(j);
+                    dir_list[ag.row][ag.col] = 1;
+                    state_list[ag.row][ag.col] = ag.state;
+                }
+
+                
+                for(int k=0; k<Constants.N; k++){
+                    for(int s=0; s<Constants.M; s++){
+                        System.out.print(dir_list[k][s]);
+                    }
+                    System.out.println();
+                }
+                System.out.println();
+                */
+                
+
+                /*
+                for(int k=0; k<Constants.N; k++){
+                    for(int s=0; s<Constants.M; s++){
+                        System.out.print(state_list[k][s]);
+                    }
+                    System.out.println();
+                }
+                System.out.println();
+                */
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -718,7 +783,7 @@ public class RandomMove {
         int next_r = r.row + Constants.dir_row[maxIndex];
         int next_c = r.col + Constants.dir_col[maxIndex];
 
-        if(grid.agent_pos[next_r][next_c] != 1){
+        if(grid.agent_pos[next_r][next_c] != 1 && grid.table[next_r][next_c] == 1){
             grid.deletePos(r);
             r.row = next_r;
             r.col = next_c;
