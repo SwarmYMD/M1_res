@@ -840,10 +840,12 @@ public class Resistance {
         Random random = new Random();
         r.rand = random.nextDouble();
         
+        /*
         if(r.number == 1){
             System.out.println(r.rand);
             System.out.printf("%d, %d\n", dif_col, dif_row);
         }
+        */
         
 
         if(r.rand <= col_rand){
@@ -889,6 +891,26 @@ public class Resistance {
                 }
             }
         }
+
+        if(grid.table[r.row][r.col] == 1){
+            //System.out.printf("this agent already reached goal.\n");
+            r.state = "t";
+
+            int h = r.areaNo/Constants.m;
+            int w = r.areaNo%Constants.m;
+            calc_sum_pher(agentList, r, grid);
+            grid.expPherData[r.row][r.col] = Constants.alpha * grid.expPherData[r.row][r.col] + Constants.c * r.sum_pher;
+            if(grid.expPherData[r.row][r.col] > Constants.tau_max){
+                grid.expPherData[r.row][r.col] = Constants.tau_max;
+            }
+            grid.disPherData[h][w] =  Constants.alpha * grid.disPherData[h][w] + Constants.c * r.sum_pher;
+            if(grid.disPherData[h][w] > Constants.tau_max){
+                grid.disPherData[h][w] = Constants.tau_max;
+            }
+            grid.alreadyUpdateExp[r.row][r.col] = true;
+            grid.alreadyUpdateDis[h][w] = true;
+            return;
+        }
     }
 
     public static void enhance(Grid grid, Agent r, List<Agent> agentList){
@@ -933,7 +955,15 @@ public class Resistance {
         int next_r = r.row + Constants.dir_row[maxIndex];
         int next_c = r.col + Constants.dir_col[maxIndex];
 
-        r.dir_flag = maxIndex+1;
+        if(next_c - r.col == -1){
+            r.dir_flag = 1; //left
+        } else if (next_c - r.col == 1){
+            r.dir_flag = 2; //right
+        } else if (next_r - r.row == -1){
+            r.dir_flag = 3; //up
+        } else if (next_r -r.row == 1){
+            r.dir_flag = 4; //down
+        }
 
         if(grid.agent_pos[next_r][next_c] != 1 && grid.table[next_r][next_c] == 1){
             grid.deletePos(r);
