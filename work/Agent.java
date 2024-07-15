@@ -30,6 +30,8 @@ public class Agent {
 
     int not_move_count;
 
+    double rand;
+
     public Agent(int r, int c){
         this.col = c;
         this.row = r;
