@@ -3,7 +3,7 @@ import java.util.*;
 import java.io.*;
 import java.nio.charset.Charset;
 
-public class RandomMove {
+public class Resistance {
     public static void main(String[] args){
         for(int n=0; n<1; n++){
             int count = 0;
@@ -59,7 +59,7 @@ public class RandomMove {
             }
 
             try{
-                FileWriter f = new FileWriter("./"+String.valueOf(n+1)+"/csv_shuffle/step0.csv");
+                FileWriter f = new FileWriter("./"+String.valueOf(n+1)+"/csv_resist/step0.csv");
                 Map<Integer, Agent> numberMap = new HashMap<>();
                 for (int j=0; j<Constants.AGENT_NUM; j++){
                     ag = agentList.get(j);
@@ -88,7 +88,7 @@ public class RandomMove {
                     }
                 }
 
-                FileWriter percent_recorder = new FileWriter("./"+String.valueOf(n+1)+"/percent_shuffle/percent.csv");
+                FileWriter percent_recorder = new FileWriter("./"+String.valueOf(n+1)+"/percent_resist/percent.csv");
 
                 achieve_percent = achieved_count / Constants.AGENT_NUM * 100;
                 percent_recorder.append(String.valueOf(0));
@@ -171,7 +171,7 @@ public class RandomMove {
                     percent_recorder.append("\n");
 
                     
-                    fw[i] = new FileWriter("./"+String.valueOf(n+1)+"/csv_shuffle/step"+String.valueOf(i+1)+".csv");
+                    fw[i] = new FileWriter("./"+String.valueOf(n+1)+"/csv_resist/step"+String.valueOf(i+1)+".csv");
                     for (int j=0; j<Constants.AGENT_NUM; j++){
                         ag = numberMap.get(j);
                         fw[i].append(String.valueOf(ag.col));
@@ -769,17 +769,17 @@ public class RandomMove {
 
             int dis = 1;
             if(a >= 0 && a < Constants.N && b >= 0 && b < Constants.M){
-                /*
-                if(grid.agent_pos[a][b] != 1){
-                    indicator[j] = Math.exp(grid.expPherData[a][b]) / dis;
-                }else{
-                    indicator[j] = 0;
-                }
-                */
-                indicator[j] = dis;
+                
+                indicator[j] = Math.exp(0-grid.expPherData[a][b]) / dis;
             }
         }
         int maxIndex = maxIndex2(indicator);
+        // resistance
+        /*
+        int next_r = r.row - Constants.dir_row[maxIndex];
+        int next_c = r.col - Constants.dir_col[maxIndex];
+        */
+
         int next_r = r.row + Constants.dir_row[maxIndex];
         int next_c = r.col + Constants.dir_col[maxIndex];
 
