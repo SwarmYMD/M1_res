@@ -979,6 +979,38 @@ public class Resistance {
 
             grid.recordPos(r);
             //r.not_move_count = -1;
+        } else {
+            List<Integer> candidates = new ArrayList<Integer>();
+            for(int j = 0; j < 4; j++){
+                int a = r.row + Constants.dir_row[j];
+                int b = r.col + Constants.dir_col[j];
+    
+                if(a >= 0 && a < Constants.N && b >= 0 && b < Constants.M){
+                    if(grid.table[a][b] == 1 && grid.agent_pos[a][b] != 1){
+                        candidates.add(a*Constants.N + b);
+                    }
+                }
+            }
+
+            if(candidates.size() != 0){
+                Collections.shuffle(candidates);
+                int next = candidates.get(0);
+
+                grid.deletePos(r);
+                r.row = next / Constants.N;
+                r.col = next % Constants.N;
+
+                calc_sum_pher(agentList, r, grid);
+                grid.expPherData[r.row][r.col] = grid.expPherData[r.row][r.col] + Constants.c * r.sum_pher;
+                    if(grid.expPherData[r.row][r.col] > Constants.tau_max){
+                        grid.expPherData[r.row][r.col] = Constants.tau_max;
+                    }
+                grid.alreadyUpdateExp[r.row][r.col] = true;
+
+                grid.recordPos(r);
+            }
+
+            candidates.clear();
         }
     }
 
