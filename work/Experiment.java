@@ -71,6 +71,8 @@ public class Experiment {
                     f.append(",");
                     f.append(String.valueOf(ag.row));
                     f.append(",");
+                    f.append(String.valueOf(ag.state));
+                    f.append(",");
                     f.append(String.valueOf(ag.dir_flag));
                     f.append("\n");
                 }
@@ -110,11 +112,16 @@ public class Experiment {
                         
                         if(ag.state.equals("t")){
                             // enhance neighbor and sometimes move
-                            enhance(grid, ag, agentList);
+                            //enhance(grid, ag, agentList);
                             if(ag.not_move_count >= 5){
                                 move(grid, ag, agentList);
                             }
-                            ag.not_move_count++;
+                            exploration(grid, ag, agentList);
+                            if(agentList.get(j).col == ag.col && agentList.get(j).row == ag.row){
+                                ag.not_move_count++;
+                            }else{
+                                ag.not_move_count = 0;
+                            }
                         }else if(ag.state.equals("e")){
                             // exploration
                             exploration(grid, ag, agentList);
@@ -167,6 +174,8 @@ public class Experiment {
                         fw[i].append(String.valueOf(ag.col));
                         fw[i].append(",");
                         fw[i].append(String.valueOf(ag.row));
+                        fw[i].append(",");
+                        fw[i].append(String.valueOf(ag.state));
                         fw[i].append(",");
                         fw[i].append(String.valueOf(ag.dir_flag));
                         fw[i].append("\n");
@@ -307,6 +316,9 @@ public class Experiment {
             r.state = "d";
             grid.no_vacancy[r.areaNo] = true;
             //System.out.printf("mode changed to dispersion.\n");
+        } else if(r.state.equals("t")){
+            plan_t(grid, leftEnd, rightEnd, upperEnd, lowerEnd, r, agentList);
+            // pheromone update will be written here?
         } else if(grid.table[r.row][r.col] != 1){
             plan_exp(grid, leftEnd, rightEnd, upperEnd, lowerEnd, r, agentList);
             grid.no_vacancy[r.areaNo] = false;
@@ -390,6 +402,107 @@ public class Experiment {
                         grid.deletePos(r);
                         r.row = r.row + Constants.dir_row[1];
                         grid.recordPos(r);
+                    }
+                }
+            }
+        }
+
+        if(grid.table[r.row][r.col] == 1){
+            r.state = "t";
+
+            int h = r.areaNo/Constants.m;
+            int w = r.areaNo%Constants.m;
+            calc_sum_pher(agentList, r, grid);
+            grid.expPherData[r.row][r.col] = Constants.alpha * grid.expPherData[r.row][r.col] + Constants.c * r.sum_pher;
+            if(grid.expPherData[r.row][r.col] > Constants.tau_max){
+                grid.expPherData[r.row][r.col] = Constants.tau_max;
+            }
+            grid.disPherData[h][w] =  Constants.alpha * grid.disPherData[h][w] + Constants.c * r.sum_pher;
+            if(grid.disPherData[h][w] > Constants.tau_max){
+                grid.disPherData[h][w] = Constants.tau_max;
+            }
+            grid.alreadyUpdateExp[r.row][r.col] = true;
+            grid.alreadyUpdateDis[h][w] = true;
+        }
+    }
+
+    public static void plan_t(Grid grid, int leftEnd, int rightEnd, int upperEnd, int lowerEnd, Agent r, List<Agent> agentList){
+        // copy pheromone data of the area which this agent exists
+        for(int i=upperEnd; i<=lowerEnd; i++){
+            for(int j=leftEnd; j<=rightEnd; j++){
+                r.expPherMatrix[i-upperEnd][j-leftEnd] = grid.expPherData[i][j];
+            }
+        }
+
+        for(int i=0; i<Constants.H; i++){
+            for(int j=0; j<Constants.W; j++){
+                r.d_exp = Math.abs(r.row - i - upperEnd) + Math.abs(r.col - j - leftEnd);
+                if(r.d_exp != 0){
+                    r.expIndicMatrix[i][j] = Math.exp(r.expPherMatrix[i][j]) / r.d_exp;
+                } else {
+                    r.expIndicMatrix[i][j] = 0;
+                }
+            }
+        }
+
+        int maxIndex = maxIndex(r.expIndicMatrix);
+        int a = maxIndex % Constants.W;
+        int b = maxIndex / Constants.W;
+
+        r.pld_col = leftEnd + a;
+        r.pld_row = upperEnd + b;
+
+        int dif_col, dif_row;
+
+        dif_col = r.pld_col - r.col;
+        dif_row = r.pld_row - r.row;
+
+        // I will add the pattern when these two values are "=" later. 
+        if(Math.abs(dif_col) >= Math.abs(dif_row)){
+            if(dif_col < 0){
+                if((r.col + Constants.dir_col[2]) >= leftEnd){
+                    r.dir_flag = 1; // left
+                    if(grid.agent_pos[r.row][r.col + Constants.dir_col[2]] != 1){
+                        if(grid.table[r.row][r.col + Constants.dir_col[2]] == 1){
+                            grid.deletePos(r);
+                            r.col = r.col + Constants.dir_col[2];
+                            grid.recordPos(r);
+                        }
+                    }
+                }
+            }else if(dif_col > 0){
+                if((r.col + Constants.dir_col[3]) <= rightEnd){
+                    r.dir_flag = 2; // right
+                    if(grid.agent_pos[r.row][r.col + Constants.dir_col[3]] != 1){
+                        if(grid.table[r.row][r.col + Constants.dir_col[3]] == 1){
+                            grid.deletePos(r);
+                            r.col = r.col + Constants.dir_col[3];
+                            grid.recordPos(r);
+                        }
+                    }
+                }
+            }
+        }else{
+            if(dif_row < 0){
+                if((r.row + Constants.dir_row[0]) >= upperEnd){
+                    r.dir_flag = 3; // up
+                    if(grid.agent_pos[r.row + Constants.dir_row[0]][r.col] != 1){
+                        if(grid.table[r.row + Constants.dir_row[0]][r.col] == 1){
+                            grid.deletePos(r);
+                            r.row = r.row + Constants.dir_row[0];
+                            grid.recordPos(r);
+                        }
+                    }
+                }
+            }else if(dif_row > 0){
+                if((r.row + Constants.dir_row[1]) <= lowerEnd){
+                    r.dir_flag = 4; // down
+                    if(grid.agent_pos[r.row + Constants.dir_row[1]][r.col] != 1){
+                        if(grid.table[r.row + Constants.dir_row[1]][r.col] == 1){
+                            grid.deletePos(r);
+                            r.row = r.row + Constants.dir_row[1];
+                            grid.recordPos(r);
+                        }
                     }
                 }
             }
@@ -604,7 +717,7 @@ public class Experiment {
             r.row = next_r;
             r.col = next_c;
             grid.recordPos(r);
-            r.not_move_count = -1;
+            //r.not_move_count = -1;
         }
     }
 
