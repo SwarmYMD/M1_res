@@ -8,7 +8,7 @@ public class Constants{
     public static final int W = M/m;
     public static final int H = N/n;
     
-    public static final int AGENT_NUM = 1000;
+    public static final int AGENT_NUM = 1220;
     
     // paramaters of this system
     public static final int T_max = 100;
@@ -16,6 +16,8 @@ public class Constants{
     public static final double c = 0.8;
     public static final double Q = 1.0;
     public static final double tau_max = 100;
+
+    public static final double epsiron = 0.1;
     
     // paramaters of agents
     public static final int range = 3;
