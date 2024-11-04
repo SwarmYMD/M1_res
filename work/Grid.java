@@ -11,6 +11,8 @@ public class Grid {
     public boolean[][] alreadyUpdateExp = new boolean[Constants.N][Constants.M];
     public boolean[][] alreadyUpdateDis = new boolean[Constants.n][Constants.m];
 
+    public int[][] filled = new int[Constants.N][Constants.M];
+
     public Grid(){
         this.h = grid.length;
         this.w = grid[0].length();
@@ -22,6 +24,7 @@ public class Grid {
         for(int i=0; i<h; i++){
             for(int j=0; j<w; j++){
                 agent_pos[i][j] = 0;
+                filled[i][j] = 0;
             }
         }
         for(int i=0; i<Constants.N; i++){
@@ -45,6 +48,34 @@ public class Grid {
 
     public void deletePos(Agent agent){
         agent_pos[agent.row][agent.col] = 0;
+    }
+
+    public void fillRec(Agent agent){
+        if(table[agent.row][agent.col] == 1){
+            for(int i=agent.row-1; i<=agent.row+1; i++){
+                for(int j=agent.col-1; j<=agent.col+1; j++){
+                    if(i>=0 && i<Constants.N && j>=0 && j<Constants.M){
+                        if(table[i][j] == 1){
+                            filled[i][j] += 1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void fillDel(Agent agent){
+        if(table[agent.row][agent.col] == 1){
+            for(int i=agent.row-1; i<=agent.row+1; i++){
+                for(int j=agent.col-1; j<=agent.col+1; j++){
+                    if(i>=0 && i<Constants.N && j>=0 && j<Constants.M){
+                        if(table[i][j] == 1){
+                            filled[i][j] -= 1;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public static String[] grid = {
