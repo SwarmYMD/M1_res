@@ -21,6 +21,11 @@ public class Agent {
     public int pgd_col;
     public int pgd_row;
 
+    public double v_col = 0;
+    public double v_row = 0;
+    public int x_col = 0;
+    public int x_row = 0;
+
     public double delta_tau;
     public double sum_pher;
 

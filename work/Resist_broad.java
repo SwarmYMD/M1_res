@@ -287,6 +287,19 @@ public class Resist_broad {
                 }
                 System.out.println();
 
+                FileWriter filled_recorder = new FileWriter("./"+String.valueOf(n+1)+"/percent_broad/filledPoint.txt");
+                for(int k=0; k<Constants.N; k++){
+                    for(int s=0; s<Constants.M; s++){
+                        if(grid.filled[k][s] >= 1){
+                            filled_recorder.append("1");
+                        }else{
+                            filled_recorder.append("0");
+                        }
+                    }
+                    filled_recorder.append("\n");
+                }
+                filled_recorder.close();
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
