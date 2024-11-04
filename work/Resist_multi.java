@@ -491,6 +491,9 @@ public class Resist_multi {
             if(r.rand <= col_rand){
                 if(dif_col < 0){
                     r.v_col = ((Constants.w * r.v_col + Constants.c_1 * pso_rand * (r.pld_col - r.col)));
+                    if(r.v_col < -3){
+                        r.v_col = -3;
+                    }
                     r.x_col = r.col + (int)(Math.ceil(r.v_col));
                     for(int i=r.col - 1; i >= r.x_col; i--){
                         if(i >= leftEnd){
@@ -508,6 +511,9 @@ public class Resist_multi {
                     grid.recordPos(r);
                 }else if(dif_col > 0){
                     r.v_col = ((Constants.w * r.v_col + Constants.c_1 * pso_rand * (r.pld_col - r.col)));
+                    if(r.v_col > 3){
+                        r.v_col = 3;
+                    }
                     r.x_col = r.col + (int)(Math.ceil(r.v_col));
                     for(int i=r.col + 1; i <= r.x_col; i++){
                         if(i <= rightEnd){
@@ -527,6 +533,9 @@ public class Resist_multi {
             } else {
                 if(dif_row < 0){
                     r.v_row = ((Constants.w * r.v_row + Constants.c_1 * pso_rand * (r.pld_row - r.row)));
+                    if(r.v_row < -3){
+                        r.v_row = -3;
+                    }
                     r.x_row = r.row + (int)(Math.ceil(r.v_row));
                     for(int i=r.row - 1; i >= r.x_row; i--){
                         if(i >= upperEnd){
@@ -544,6 +553,9 @@ public class Resist_multi {
                     grid.recordPos(r);
                 }else if(dif_row > 0){
                     r.v_row = ((Constants.w * r.v_row + Constants.c_1 * pso_rand * (r.pld_row - r.row)));
+                    if(r.v_row > 3){
+                        r.v_row = 3;
+                    }
                     r.x_row = r.row + (int)(Math.ceil(r.v_row));
                     for(int i=r.row + 1; i <= r.x_row; i++){
                         if(i <= lowerEnd){
@@ -908,6 +920,9 @@ public class Resist_multi {
                 //if(r.number == 1) System.out.println("rand <= col_rand");
                 if(dif_col < 0){
                     r.v_col = ((Constants.w * r.v_col + Constants.c_2 * pso_rand * (r.pgd_col - r.col)));
+                    if(r.v_col < -3){
+                        r.v_col = -3;
+                    }
                     r.x_col = r.col + (int)(Math.ceil(r.v_col));
                     for(int i=r.col - 1; i >= r.x_col; i--){
                         if(i >= 0){
@@ -925,6 +940,9 @@ public class Resist_multi {
                     grid.recordPos(r);
                 }else if(dif_col > 0){
                     r.v_col = ((Constants.w * r.v_col + Constants.c_2 * pso_rand * (r.pgd_col - r.col)));
+                    if(r.v_col > 3){
+                        r.v_col = 3;
+                    }
                     r.x_col = r.col + (int)(Math.ceil(r.v_col));
                     for(int i=r.col + 1; i <= r.x_col; i++){
                         if(i < Constants.M){
@@ -944,6 +962,9 @@ public class Resist_multi {
             } else {
                 if(dif_row < 0){
                     r.v_row = ((Constants.w * r.v_row + Constants.c_2 * pso_rand * (r.pgd_row - r.row)));
+                    if(r.v_row < -3){
+                        r.v_row = -3;
+                    }
                     r.x_row = r.row + (int)(Math.ceil(r.v_row));
                     for(int i=r.row - 1; i >= r.x_row; i--){
                         if(i >= 0){
@@ -961,6 +982,9 @@ public class Resist_multi {
                     grid.recordPos(r);
                 }else if(dif_row > 0){
                     r.v_row = ((Constants.w * r.v_row + Constants.c_2 * pso_rand * (r.pgd_row - r.row)));
+                    if(r.v_row > 3){
+                        r.v_row = 3;
+                    }
                     r.x_row = r.row + (int)(Math.ceil(r.v_row));
                     for(int i=r.row + 1; i <= r.x_row; i++){
                         if(i < Constants.M){
