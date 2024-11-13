@@ -110,13 +110,6 @@ public class Resist_multi {
 
                         // PLEASE WRITE THE CONTENT OF SYSTEM HERE!!!!!!!!!
                         if(ag.state.equals("t")){
-                            // enhance neighbor and sometimes move
-                            //enhance(grid, ag, agentList);
-                            /*
-                            if(ag.not_move_count >= 5){
-                                move(grid, ag, agentList);
-                            }
-                            */
                             move(grid, ag, agentList);
                             //exploration(grid, ag, agentList);
                             if(agentList.get(j).col == ag.col && agentList.get(j).row == ag.row){
@@ -279,69 +272,6 @@ public class Resist_multi {
                 }
                 System.out.println();
 
-                /*
-
-                for(int k=0; k<Constants.n; k++){
-                    for(int s=0; s<Constants.m; s++){
-                        System.out.printf("%2.2f, ", grid.disPherData[k][s]);
-                    }
-                    System.out.println();
-                }
-                System.out.println();
-
-                for(int k=0; k<Constants.n; k++){
-                    for(int s=0; s<Constants.m; s++){
-                        System.out.printf("%2.3f, ", agentList.get(0).disIndicMatrix[k][s]);
-                    }
-                    System.out.println();
-                }
-                System.out.println();
-
-                for(int k=0; k<Constants.n; k++){
-                    for(int s=0; s<Constants.m; s++){
-                        System.out.printf("%d, ", Math.abs(agentList.get(0).row - (k*Constants.H + Constants.H/2 )) + Math.abs(agentList.get(0).col - (s*Constants.W + Constants.W/2 )));
-                    }
-                    System.out.println();
-                }
-                System.out.println();
-
-                int[][] dir_list = new int[Constants.N][Constants.M];
-                String[][] state_list = new String[Constants.N][Constants.M];
-
-                for(int k=0; k<Constants.N; k++){
-                    for(int s=0; s<Constants.M; s++){
-                        dir_list[k][s] = 0;
-                        state_list[k][s] = "0";
-                    }
-                }
-                
-                for (int j=0; j<Constants.AGENT_NUM; j++){
-                    ag = agentList.get(j);
-                    dir_list[ag.row][ag.col] = 1;
-                    state_list[ag.row][ag.col] = ag.state;
-                }
-
-                
-                for(int k=0; k<Constants.N; k++){
-                    for(int s=0; s<Constants.M; s++){
-                        System.out.print(dir_list[k][s]);
-                    }
-                    System.out.println();
-                }
-                System.out.println();
-                */
-                
-
-                /*
-                for(int k=0; k<Constants.N; k++){
-                    for(int s=0; s<Constants.M; s++){
-                        System.out.print(state_list[k][s]);
-                    }
-                    System.out.println();
-                }
-                System.out.println();
-                */
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -441,54 +371,11 @@ public class Resist_multi {
         dif_row = r.pld_row - r.row;
 
         double enhanced_eps = Constants.epsiron * r.not_move_count;
-        if(enhanced_eps == 0) enhanced_eps = Constants.epsiron;
-
-        // RECONFIG!!!!!!
-        // I will add the pattern when these two values are "=" later. 
-
-        /*
-        if(Math.abs(dif_col) >= Math.abs(dif_row)){
-            if(dif_col < 0){
-                if((r.col + Constants.dir_col[2]) >= leftEnd){
-                    r.dir_flag = 1; // left
-                    if(grid.agent_pos[r.row][r.col + Constants.dir_col[2]] != 1){
-                        grid.deletePos(r);
-                        r.col = r.col + Constants.dir_col[2];
-                        grid.recordPos(r);
-                    }
-                }
-            }else if(dif_col > 0){
-                if((r.col + Constants.dir_col[3]) <= rightEnd){
-                    r.dir_flag = 2; // right
-                    if(grid.agent_pos[r.row][r.col + Constants.dir_col[3]] != 1){
-                        grid.deletePos(r);
-                        r.col = r.col + Constants.dir_col[3];
-                        grid.recordPos(r);
-                    }
-                }
-            }
-        }else{
-            if(dif_row < 0){
-                if((r.row + Constants.dir_row[0]) >= upperEnd){
-                    r.dir_flag = 3; // up
-                    if(grid.agent_pos[r.row + Constants.dir_row[0]][r.col] != 1){
-                        grid.deletePos(r);
-                        r.row = r.row + Constants.dir_row[0];
-                        grid.recordPos(r);
-                    }
-                }
-            }else if(dif_row > 0){
-                if((r.row + Constants.dir_row[1]) <= lowerEnd){
-                    r.dir_flag = 4; // down
-                    if(grid.agent_pos[r.row + Constants.dir_row[1]][r.col] != 1){
-                        grid.deletePos(r);
-                        r.row = r.row + Constants.dir_row[1];
-                        grid.recordPos(r);
-                    }
-                }
-            }
+        if(enhanced_eps == 0) {
+            enhanced_eps = Constants.epsiron;
+        } else if (enhanced_eps >= 1) {
+            enhanced_eps = 1;
         }
-        */
 
         double col_rand = (double) (Math.abs(dif_col) / (Math.abs(dif_col) + Math.abs(dif_row)));
         Random random = new Random();
@@ -499,7 +386,7 @@ public class Resist_multi {
         int next_row = r.row;
 
         //if(r.rand >= Constants.epsiron){
-        if(r.rand >= enhanced_eps){
+        if(r.rand > enhanced_eps){
             r.rand = random.nextDouble();
             if(r.rand <= col_rand){
                 if(dif_col < 0){
@@ -643,51 +530,6 @@ public class Resist_multi {
 
         dif_col = r.pld_col - r.col;
         dif_row = r.pld_row - r.row;
-
-        // I will add the pattern when these two values are "=" later. 
-        /*
-        if(Math.abs(dif_col) >= Math.abs(dif_row)){
-            if(dif_col < 0){
-                if((r.col + Constants.dir_col[2]) >= leftEnd){
-                    r.dir_flag = 1; // left
-                    if(grid.agent_pos[r.row][r.col + Constants.dir_col[2]] != 1){
-                        grid.deletePos(r);
-                        r.col = r.col + Constants.dir_col[2];
-                        grid.recordPos(r);
-                    }
-                }
-            }else if(dif_col > 0){
-                if((r.col + Constants.dir_col[3]) <= rightEnd){
-                    r.dir_flag = 2; // right
-                    if(grid.agent_pos[r.row][r.col + Constants.dir_col[3]] != 1){
-                        grid.deletePos(r);
-                        r.col = r.col + Constants.dir_col[3];
-                        grid.recordPos(r);
-                    }
-                }
-            }
-        }else{
-            if(dif_row < 0){
-                if((r.row + Constants.dir_row[0]) >= upperEnd){
-                    r.dir_flag = 3; // up
-                    if(grid.agent_pos[r.row + Constants.dir_row[0]][r.col] != 1){
-                        grid.deletePos(r);
-                        r.row = r.row + Constants.dir_row[0];
-                        grid.recordPos(r);
-                    }
-                }
-            }else if(dif_row > 0){
-                if((r.row + Constants.dir_row[1]) <= lowerEnd){
-                    r.dir_flag = 4; // down
-                    if(grid.agent_pos[r.row + Constants.dir_row[1]][r.col] != 1){
-                        grid.deletePos(r);
-                        r.row = r.row + Constants.dir_row[1];
-                        grid.recordPos(r);
-                    }
-                }
-            }
-        }
-        */
 
         double col_rand = (double) (Math.abs(dif_col) / (Math.abs(dif_col) + Math.abs(dif_row)));
         Random random = new Random();
@@ -879,68 +721,19 @@ public class Resist_multi {
         int next_row = r.row;
 
         double enhanced_eps = Constants.epsiron * r.not_move_count;
-        if(enhanced_eps == 0) enhanced_eps = Constants.epsiron;
-
-        // I will add the pattern when these two values are "=" later.
-        
-        /*
-        if(Math.abs(dif_col) >= Math.abs(dif_row)){
-            if(dif_col < 0){
-                if((r.col + Constants.dir_col[2]) >= 0){
-                    r.dir_flag = 1; // left
-                    if(grid.agent_pos[r.row][r.col + Constants.dir_col[2]] != 1){
-                        grid.deletePos(r);
-                        r.col = r.col + Constants.dir_col[2];
-                        grid.recordPos(r);
-                    }
-                }
-            }else if(dif_col > 0){
-                if((r.col + Constants.dir_col[3]) <= Constants.M){
-                    r.dir_flag = 2; // right
-                    if(grid.agent_pos[r.row][r.col + Constants.dir_col[3]] != 1){
-                        grid.deletePos(r);
-                        r.col = r.col + Constants.dir_col[3];
-                        grid.recordPos(r);
-                    }
-                }
-            }
-        }else{
-            if(dif_row < 0){
-                if((r.row + Constants.dir_row[0]) >= 0){
-                    r.dir_flag = 3; // up
-                    if(grid.agent_pos[r.row + Constants.dir_row[0]][r.col] != 1){
-                        grid.deletePos(r);
-                        r.row = r.row + Constants.dir_row[0];
-                        grid.recordPos(r);
-                    }
-                }
-            }else if(dif_row > 0){
-                if((r.row + Constants.dir_row[1]) <= Constants.N){
-                    r.dir_flag = 4; // down
-                    if(grid.agent_pos[r.row + Constants.dir_row[1]][r.col] != 1){
-                        grid.deletePos(r);
-                        r.row = r.row + Constants.dir_row[1];
-                        grid.recordPos(r);
-                    }
-                }
-            }
+        if(enhanced_eps == 0) {
+            enhanced_eps = Constants.epsiron;
+        } else if (enhanced_eps >= 1) {
+            enhanced_eps = 1;
         }
-        */
-
+        
         double col_rand = (double) (Math.abs(dif_col) / (Math.abs(dif_col) + Math.abs(dif_row)));
         Random random = new Random();
         double pso_rand = random.nextDouble();
         r.rand = random.nextDouble();
         
-        /*
-        if(r.number == 1){
-            System.out.println(r.rand);
-            System.out.printf("%d, %d\n", dif_col, dif_row);
-        }
-        */
-        
         //if(r.rand >= Constants.epsiron){
-        if(r.rand >= enhanced_eps){
+        if(r.rand > enhanced_eps){
             r.rand = random.nextDouble();
             if(r.rand <= col_rand){
                 //if(r.number == 1) System.out.println("rand <= col_rand");
