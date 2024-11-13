@@ -439,6 +439,7 @@ public class Resist_multi {
         dif_row = r.pld_row - r.row;
 
         int enhanced_eps = Constants.epsiron * r.not_move_count;
+        if(enhanced_eps == 0) enhanced_eps = Constants.epsiron;
 
         // RECONFIG!!!!!!
         // I will add the pattern when these two values are "=" later. 
@@ -874,6 +875,7 @@ public class Resist_multi {
         int next_row = r.row;
 
         int enhanced_eps = Constants.epsiron * r.not_move_count;
+        if(enhanced_eps == 0) enhanced_eps = Constants.epsiron;
 
         // I will add the pattern when these two values are "=" later.
         
