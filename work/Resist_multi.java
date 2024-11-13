@@ -957,7 +957,13 @@ public class Resist_multi {
 
             int dis = 1;
             if(a >= 0 && a < Constants.N && b >= 0 && b < Constants.M){
-                indicator[j] = dis;
+                if (grid.agent_pos[a][b] != 1) {
+                    indicator[j] = dis;
+                } else {
+                    indicator[j] = 0;
+                }
+            } else {
+                indicator[j] = 0;
             }
         }
         int maxIndex = maxIndex2(indicator);
