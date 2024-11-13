@@ -378,6 +378,9 @@ public class Resist_multi {
             }
         }
 
+        int pre_col = r.col;
+        int pre_row = r.row;
+
         // if all pattern grids are occupied, changing mode(otherwise, continuing dispersion mode)
         if(remain_num == 0){
             r.state = "d";
@@ -392,6 +395,10 @@ public class Resist_multi {
             // pheromone update will be written here?
         }else{
             grid.no_vacancy[r.areaNo] = false;
+        }
+
+        if(r.col == pre_col && r.rpw == pre_row){
+            r.not_move_count++;
         }
 
         if(r.length_move != 0){
@@ -430,6 +437,8 @@ public class Resist_multi {
 
         dif_col = r.pld_col - r.col;
         dif_row = r.pld_row - r.row;
+
+        int enhanced_eps = Constants.epsiron * r.not_move_count;
 
         // RECONFIG!!!!!!
         // I will add the pattern when these two values are "=" later. 
@@ -487,6 +496,7 @@ public class Resist_multi {
         int next_row = r.row;
 
         //if(r.rand >= Constants.epsiron){
+        if(r.rand >= enhanced_eps){
             r.rand = random.nextDouble();
             if(r.rand <= col_rand){
                 if(dif_col < 0){
@@ -573,11 +583,11 @@ public class Resist_multi {
                     grid.recordPos(r);
                 }
             }
-        /* } else {
+        } else {
             r.v_col = 0;
             r.v_row = 0;
             randomMove(grid, r, agentList);
-        } */
+        }
 
         if(grid.table[r.row][r.col] == 1){
             r.state = "t";
@@ -803,6 +813,9 @@ public class Resist_multi {
             grid.no_vacancy[r.areaNo] = false;
         }
 
+        int pre_col = r.col;
+        int pre_row = r.row;
+
         if(r.areaNo == r.next_area){
             if(grid.no_vacancy[r.areaNo] == false){
                 r.state = "e";
@@ -811,6 +824,10 @@ public class Resist_multi {
             }
         } else {
             plan_dis(grid, r, agentList);
+        }
+
+        if(r.col == pre_col && r.rpw == pre_row){
+            r.not_move_count++;
         }
 
         if(r.length_move != 0){
@@ -855,6 +872,8 @@ public class Resist_multi {
 
         int next_col = r.col;
         int next_row = r.row;
+
+        int enhanced_eps = Constants.epsiron * r.not_move_count;
 
         // I will add the pattern when these two values are "=" later.
         
@@ -915,6 +934,7 @@ public class Resist_multi {
         */
         
         //if(r.rand >= Constants.epsiron){
+        if(r.rand >= enhanced_eps){
             r.rand = random.nextDouble();
             if(r.rand <= col_rand){
                 //if(r.number == 1) System.out.println("rand <= col_rand");
@@ -1002,11 +1022,11 @@ public class Resist_multi {
                     grid.recordPos(r);
                 }
             }
-        /* } else {
+        } else {
             r.v_col = 0;
             r.v_row = 0;
             randomMove(grid, r, agentList);
-        } */
+        }
 
         if(grid.table[r.row][r.col] == 1){
             //System.out.printf("this agent already reached goal.\n");
