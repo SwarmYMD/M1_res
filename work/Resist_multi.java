@@ -399,6 +399,8 @@ public class Resist_multi {
 
         if(r.col == pre_col && r.row == pre_row){
             r.not_move_count++;
+        } else {
+            r.not_move_count = 0;
         }
 
         if(r.length_move != 0){
@@ -829,6 +831,8 @@ public class Resist_multi {
 
         if(r.col == pre_col && r.row == pre_row){
             r.not_move_count++;
+        } else {
+            r.not_move_count = 0;
         }
 
         if(r.length_move != 0){
