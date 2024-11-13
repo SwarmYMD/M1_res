@@ -397,7 +397,7 @@ public class Resist_multi {
             grid.no_vacancy[r.areaNo] = false;
         }
 
-        if(r.col == pre_col && r.rpw == pre_row){
+        if(r.col == pre_col && r.row == pre_row){
             r.not_move_count++;
         }
 
@@ -827,7 +827,7 @@ public class Resist_multi {
             plan_dis(grid, r, agentList);
         }
 
-        if(r.col == pre_col && r.rpw == pre_row){
+        if(r.col == pre_col && r.row == pre_row){
             r.not_move_count++;
         }
 
