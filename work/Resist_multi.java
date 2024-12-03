@@ -16,10 +16,16 @@ public class Resist_multi {
 
             int pattern_num = 0;
 
+            boolean pd_flag = true;
+            boolean pher_flag = true;
+
             Grid grid = new Grid();
             List<Agent> agentList = new ArrayList<Agent>();
             FileWriter[] fw = new FileWriter[Constants.T_max];
             FileWriter[] direction_recorder = new FileWriter[Constants.T_max];
+
+            FileWriter[] pherE_rec = new FileWriter[Constants.T_max];
+            FileWriter[] pherD_rec = new FileWriter[Constants.T_max];
 
             Agent ag;
 
@@ -75,6 +81,22 @@ public class Resist_multi {
                     f.append(String.valueOf(ag.state));
                     f.append(",");
                     f.append(String.valueOf(ag.dir_flag));
+                    if(pd_flag){
+                        f.append(",");
+                        if(ag.state == "e"){
+                            f.append(String.valueOf(ag.pld_col));
+                            f.append(",");
+                            f.append(String.valueOf(ag.pld_row));
+                        } else if (ag.state == "d"){
+                            f.append(String.valueOf(ag.pgd_col));
+                            f.append(",");
+                            f.append(String.valueOf(ag.pgd_row));
+                        } else {
+                            f.append(String.valueOf(-1));
+                            f.append(",");
+                            f.append(String.valueOf(-1));
+                        }
+                    }
                     f.append("\n");
                 }
                 f.close();
@@ -173,10 +195,45 @@ public class Resist_multi {
                         fw[i].append(String.valueOf(ag.state));
                         fw[i].append(",");
                         fw[i].append(String.valueOf(ag.dir_flag));
+                        if(pd_flag){
+                            fw[i].append(",");
+                            if(ag.state == "e"){
+                                fw[i].append(String.valueOf(ag.pld_col));
+                                fw[i].append(",");
+                                fw[i].append(String.valueOf(ag.pld_row));
+                            } else if (ag.state == "d"){
+                                fw[i].append(String.valueOf(ag.pgd_col));
+                                fw[i].append(",");
+                                fw[i].append(String.valueOf(ag.pgd_row));
+                            } else {
+                                fw[i].append(String.valueOf(-1));
+                                fw[i].append(",");
+                                fw[i].append(String.valueOf(-1));
+                            }
+                        }
                         fw[i].append("\n");
                     }
                     fw[i].close();
 
+                    pherE_rec[i] = new FileWriter("./"+String.valueOf(n+1)+"/expPher/step"+String.valueOf(i+1)+".csv");
+                    for(int k=0; k<Constants.N; k++){
+                        for(int s=0; s<Constants.M; s++){
+                            pherE_rec[i].append(String.valueOf(grid.expPherData[k][s]));
+                            pherE_rec[i].append(",");
+                        }
+                        pherE_rec[i].append("\n");
+                    }
+                    pherE_rec[i].close();
+                    
+                    pherD_rec[i] = new FileWriter("./"+String.valueOf(n+1)+"/disPher/step"+String.valueOf(i+1)+".csv");
+                    for(int k=0; k<Constants.n; k++){
+                        for(int s=0; s<Constants.m; s++){
+                            pherD_rec[i].append(String.valueOf(grid.disPherData[k][s]));
+                            pherD_rec[i].append(",");
+                        }
+                        pherD_rec[i].append("\n");
+                    }
+                    pherD_rec[i].close();
                     
                     for(int k=0; k<Constants.N; k++){
                         for(int s=0; s<Constants.M; s++){
@@ -970,6 +1027,7 @@ public class Resist_multi {
         int next_r = r.row + Constants.dir_row[maxIndex];
         int next_c = r.col + Constants.dir_col[maxIndex];
 
+        if(next_r >= 0 && next_r < Constants.N && next_c >= 0 && next_c < Constants.M)
         if(grid.agent_pos[next_r][next_c] != 1 && grid.table[next_r][next_c] == 1){
             grid.deletePos(r);
             r.row = next_r;
