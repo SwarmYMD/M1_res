@@ -174,7 +174,7 @@ def getGraph():
             fname = "./csv_multi/step"+str(k)+".csv",
             dtype = int,
             delimiter = ",",
-            usecols=[0,1,4,5]
+            usecols=[0,1,4,5,2]
         )
 
         for i in range(n):
@@ -193,11 +193,17 @@ def getGraph():
             if grid[data[1]][data[0]] == "1":
                 ax.add_patch(patches.Circle(xy=(data[0], data[1]),radius=0.25,fc="blue"))
                 if data[2] != -1:
-                    plt.plot([data[0], data[2]], [data[1], data[3]], linewidth=0.1, color="red")
+                    if data[4] == 1:
+                        plt.plot([data[0], data[2]], [data[1], data[3]], linewidth=0.1, color="green")
+                    elif data[4] == 2:
+                        plt.plot([data[0], data[2]], [data[1], data[3]], linewidth=0.1, color="red")
             else :
                 ax.add_patch(patches.Circle(xy=(data[0], data[1]),radius=0.25,fc="red"))
                 if data[2] != -1:
-                    plt.plot([data[0], data[2]], [data[1], data[3]], linewidth=0.1, color="red")
+                    if data[4] == 1:
+                        plt.plot([data[0], data[2]], [data[1], data[3]], linewidth=0.1, color="green")
+                    elif data[4] == 2:
+                        plt.plot([data[0], data[2]], [data[1], data[3]], linewidth=0.1, color="red")
         plt.axis("scaled")
         ax.set_aspect("equal")
         ax.axis("off")
