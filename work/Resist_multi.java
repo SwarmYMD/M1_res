@@ -78,8 +78,16 @@ public class Resist_multi {
                     f.append(",");
                     f.append(String.valueOf(ag.row));
                     f.append(",");
-                    f.append(String.valueOf(ag.state));
-                    f.append(",");
+                    if(ag.state == "e"){
+                        f.append("1");
+                        f.append(",");
+                    } else if (ag.state == "d"){
+                        f.append("2");
+                        f.append(",");
+                    } else {
+                        f.append("0");
+                        f.append(",");
+                    }
                     f.append(String.valueOf(ag.dir_flag));
                     if(pd_flag){
                         f.append(",");
@@ -192,8 +200,16 @@ public class Resist_multi {
                         fw[i].append(",");
                         fw[i].append(String.valueOf(ag.row));
                         fw[i].append(",");
-                        fw[i].append(String.valueOf(ag.state));
-                        fw[i].append(",");
+                        if(ag.state == "e"){
+                            fw[i].append("1");
+                            fw[i].append(",");
+                        } else if (ag.state == "d"){
+                            fw[i].append("2");
+                            fw[i].append(",");
+                        } else {
+                            fw[i].append("0");
+                            fw[i].append(",");
+                        }
                         fw[i].append(String.valueOf(ag.dir_flag));
                         if(pd_flag){
                             fw[i].append(",");
