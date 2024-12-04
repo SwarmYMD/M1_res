@@ -162,7 +162,7 @@ public class Resist_multi {
                         ag = agentList.get(j);
                         if(ag.state.equals("t")){
                             if(grid.table[ag.row][ag.col] == 0){
-                                ag.state = "d";
+                                ag.state = "e";
                                 agentList.set(j, ag);
                             }
                         }
@@ -458,8 +458,8 @@ public class Resist_multi {
         int next_col = r.col;
         int next_row = r.row;
 
-        //if(r.rand >= Constants.epsiron){
-        if(r.rand > enhanced_eps){
+        if(r.rand >= Constants.epsiron){
+        //if(r.rand > enhanced_eps){
             r.rand = random.nextDouble();
             if(r.rand <= col_rand){
                 if(dif_col < 0){
@@ -741,7 +741,11 @@ public class Resist_multi {
                 plan_dis(grid, r, agentList);
             }
         } else {
-            plan_dis(grid, r, agentList);
+            if(grid.no_vacancy[r.areaNo] == false){
+                r.state = "e";
+            } else {
+                plan_dis(grid, r, agentList);
+            }
         }
 
         if(r.col == pre_col && r.row == pre_row){
@@ -768,7 +772,8 @@ public class Resist_multi {
                 r.d_dis = Math.abs(r.row - (i*Constants.H + Constants.H/2 )) + Math.abs(r.col - (j*Constants.W + Constants.W/2 ));
                 if (grid.no_vacancy[i*Constants.m+j] == true){
                     r.disIndicMatrix[i][j] = 0;
-                } else if(r.d_dis != 0){
+                //} else if(r.d_dis != 0){
+                } else if(r.d_dis >= Constants.H/2){
                     r.disIndicMatrix[i][j] = Math.exp(0-r.disPherMatrix[i][j]) / r.d_dis;
                 } else {
                     r.disIndicMatrix[i][j] = 0;
@@ -805,8 +810,8 @@ public class Resist_multi {
         double pso_rand = random.nextDouble();
         r.rand = random.nextDouble();
         
-        //if(r.rand >= Constants.epsiron){
-        if(r.rand > enhanced_eps){
+        if(r.rand >= Constants.epsiron){
+        //if(r.rand > enhanced_eps){
             r.rand = random.nextDouble();
             if(r.rand <= col_rand){
                 //if(r.number == 1) System.out.println("rand <= col_rand");

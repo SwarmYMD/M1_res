@@ -194,14 +194,14 @@ def getGraph():
                 ax.add_patch(patches.Circle(xy=(data[0], data[1]),radius=0.25,fc="blue"))
                 if data[2] != -1:
                     if data[4] == 1:
-                        plt.plot([data[0], data[2]], [data[1], data[3]], linewidth=0.1, color="green")
+                        plt.plot([data[0], data[2]], [data[1], data[3]], linewidth=0.1, color="blue")
                     elif data[4] == 2:
                         plt.plot([data[0], data[2]], [data[1], data[3]], linewidth=0.1, color="red")
             else :
                 ax.add_patch(patches.Circle(xy=(data[0], data[1]),radius=0.25,fc="red"))
                 if data[2] != -1:
                     if data[4] == 1:
-                        plt.plot([data[0], data[2]], [data[1], data[3]], linewidth=0.1, color="green")
+                        plt.plot([data[0], data[2]], [data[1], data[3]], linewidth=0.1, color="blue")
                     elif data[4] == 2:
                         plt.plot([data[0], data[2]], [data[1], data[3]], linewidth=0.1, color="red")
         plt.axis("scaled")
@@ -209,7 +209,7 @@ def getGraph():
         ax.axis("off")
         fig.subplots_adjust(left=0, right=1, bottom=0, top=1)
         ax.invert_yaxis()
-        fig.savefig("./pics_survey/step"+str(k)+".png")
+        fig.savefig("./pics_survey/image/step"+str(k)+".png")
 
         plt.close()
 
