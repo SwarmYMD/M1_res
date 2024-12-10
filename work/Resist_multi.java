@@ -4,6 +4,9 @@ import java.io.*;
 import java.nio.charset.Charset;
 
 public class Resist_multi {
+
+    static Random random = new Random(0);
+    
     public static void main(String[] args){
         for(int n=0; n<1; n++){
             int count = 0;
@@ -11,8 +14,6 @@ public class Resist_multi {
 
             double achieved_count = 0.0;
             double achieve_percent = 0.0;
-
-            Random random = new Random();
 
             int pattern_num = 0;
 
@@ -451,7 +452,6 @@ public class Resist_multi {
         }
 
         double col_rand = (double) (Math.abs(dif_col) / (Math.abs(dif_col) + Math.abs(dif_row)));
-        Random random = new Random();
         double pso_rand = random.nextDouble();
         r.rand = random.nextDouble();
 
@@ -605,7 +605,6 @@ public class Resist_multi {
         dif_row = r.pld_row - r.row;
 
         double col_rand = (double) (Math.abs(dif_col) / (Math.abs(dif_col) + Math.abs(dif_row)));
-        Random random = new Random();
         r.rand = random.nextDouble();
 
         if(r.rand >= Constants.epsiron){
@@ -789,8 +788,15 @@ public class Resist_multi {
 
         int dif_col, dif_row;
 
+        int objPos = decideDis();
+
+        r.pgd_col = area_c * Constants.W + objPos % Constants.W;
+        r.pgd_row = area_r * Constants.H + objPos / Constants.W;
+
+        /*
         r.pgd_col = area_c * Constants.W + Constants.W/2;
         r.pgd_row = area_r * Constants.H + Constants.H/2;
+        */
 
         dif_col = r.pgd_col - r.col;
         dif_row = r.pgd_row - r.row;
@@ -806,7 +812,6 @@ public class Resist_multi {
         }
         
         double col_rand = (double) (Math.abs(dif_col) / (Math.abs(dif_col) + Math.abs(dif_row)));
-        Random random = new Random();
         double pso_rand = random.nextDouble();
         r.rand = random.nextDouble();
         
@@ -1121,5 +1126,13 @@ public class Resist_multi {
                 }
             }
         }
+    }
+
+    public static int decideDis() {
+        int pos = 0;
+
+        pos = random.nextInt(Constants.H * Constants.W);
+
+        return pos;
     }
 }
