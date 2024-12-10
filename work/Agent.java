@@ -61,8 +61,10 @@ public class Agent {
 
         this.d_exp = 0;
         this.d_dis = 0;
-        this.pld_col = 0;
-        this.pld_row = 0;
+        this.pld_col = -1;
+        this.pld_row = -1;
+        this.pgd_col = -1;
+        this.pgd_row = -1;
 
         this.delta_tau = 1.0;
         this.sum_pher = 0.0;
