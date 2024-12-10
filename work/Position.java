@@ -25,7 +25,8 @@ public class Position{
                 
                 //randomList.add(i);
             }
-            Collections.shuffle(randomList);
+            Random random = new Random(n);
+            Collections.shuffle(randomList, random);
 
             Agent[] agents = new Agent[Constants.AGENT_NUM];
             for (int i=0; i<Constants.AGENT_NUM; i++){
