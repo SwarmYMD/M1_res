@@ -784,19 +784,17 @@ public class Resist_multi {
         int area_c = disIndex % Constants.m;
         int area_r = disIndex / Constants.m;
 
-        int objPos = 0;
-
         r.next_area = r.getAreaNo(area_r, area_c);
         if(r.next_area != r.pre_next_area){
-            objPos = decideDis();
+            r.objPos = decideDis();
         }
 
         r.pre_next_area = r.next_area;
 
         int dif_col, dif_row;
 
-        r.pgd_col = area_c * Constants.W + objPos % Constants.W;
-        r.pgd_row = area_r * Constants.H + objPos / Constants.W;
+        r.pgd_col = area_c * Constants.W + r.objPos % Constants.W;
+        r.pgd_row = area_r * Constants.H + r.objPos / Constants.W;
 
         /*
         r.pgd_col = area_c * Constants.W + Constants.W/2;
