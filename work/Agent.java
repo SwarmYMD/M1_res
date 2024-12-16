@@ -13,6 +13,7 @@ public class Agent {
 
     public int areaNo;
     public int next_area;
+    public int pre_next_area;
 
     public int d_exp;
     public int d_dis;
@@ -58,6 +59,7 @@ public class Agent {
 
         this.areaNo = c / Constants.W + (r / Constants.H) * Constants.m;
         this.next_area = -1;
+        this.pre_next_area = -2;
 
         this.d_exp = 0;
         this.d_dis = 0;
