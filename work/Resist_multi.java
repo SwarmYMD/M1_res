@@ -474,6 +474,7 @@ public class Resist_multi {
                                 next_col = i;
                                 r.dir_flag = 1; // left
                             }else{
+                                next_col = i+1;
                                 r.v_col = 0;
                                 break;
                             }
@@ -494,6 +495,7 @@ public class Resist_multi {
                                 next_col = i;
                                 r.dir_flag = 2; // right
                             }else{
+                                next_col = i-1;
                                 r.v_col = 0;
                                 break;
                             }
@@ -516,6 +518,7 @@ public class Resist_multi {
                                 next_row = i;
                                 r.dir_flag = 3; // up
                             }else{
+                                next_row = i+1;
                                 r.v_row = 0;
                                 break;
                             }
@@ -536,6 +539,7 @@ public class Resist_multi {
                                 next_row = i;
                                 r.dir_flag = 4; // down
                             }else{
+                                next_row = i-1;
                                 r.v_row = 0;
                                 break;
                             }
@@ -737,13 +741,13 @@ public class Resist_multi {
             if(grid.no_vacancy[r.areaNo] == false){
                 r.state = "e";
             } else {
-                plan_dis(grid, r, agentList);
+                plan_dis(grid, r, agentList, pre_col, pre_row);
             }
         } else {
             if(grid.no_vacancy[r.areaNo] == false){
                 r.state = "e";
             } else {
-                plan_dis(grid, r, agentList);
+                plan_dis(grid, r, agentList, pre_col, pre_row);
             }
         }
 
@@ -759,7 +763,7 @@ public class Resist_multi {
         remain_num = 0;
     }
 
-    public static void plan_dis(Grid grid, Agent r, List<Agent> agentList){
+    public static void plan_dis(Grid grid, Agent r, List<Agent> agentList, int pre_c, int  pre_r){
         for(int i=0; i<Constants.n; i++){
             for(int j=0; j<Constants.m; j++){
                r.disPherMatrix[i][j] = grid.disPherData[i][j];
@@ -814,9 +818,16 @@ public class Resist_multi {
             enhanced_eps = 1;
         }
         
-        double col_rand = (double) (Math.abs(dif_col) / (Math.abs(dif_col) + Math.abs(dif_row)));
+        // (double)/(double) MUST!!!!!!!
+        double col_rand = (double) Math.abs(dif_col) / (double) (Math.abs(dif_col) + Math.abs(dif_row));
         double pso_rand = random.nextDouble();
         r.rand = random.nextDouble();
+
+        /*
+        if(r.col == 0){
+            System.out.printf("%d: run this point, v_col: %d, x_col: %d, now: (%d, %d), dir: %d, pgd: (%d, %d), dif: (%d, %d)\n", r.number, (int)(Math.ceil(r.v_col)), r.x_col, r.col, r.row, r.dir_flag, r.pgd_col, r.pgd_row, dif_col, dif_row);
+        }
+        */
         
         if(r.rand >= Constants.epsiron){
         //if(r.rand > enhanced_eps){
@@ -835,6 +846,7 @@ public class Resist_multi {
                                 next_col = i;
                                 r.dir_flag = 1; // left
                             }else{
+                                next_col = i+1;
                                 r.v_col = 0;
                                 break;
                             }
@@ -855,16 +867,19 @@ public class Resist_multi {
                                 next_col = i;
                                 r.dir_flag = 2; // right
                             }else{
+                                next_col = i-1;
                                 r.v_col = 0;
                                 break;
                             }
                         }
                     }
+                    
                     grid.deletePos(r);
                     r.col = next_col;
                     grid.recordPos(r);
                 }
             } else {
+                
                 if(dif_row < 0){
                     r.v_row = ((Constants.w * r.v_row + Constants.c_2 * pso_rand * (r.pgd_row - r.row)));
                     if(r.v_row < -3){
@@ -877,6 +892,7 @@ public class Resist_multi {
                                 next_row = i;
                                 r.dir_flag = 3; // up
                             }else{
+                                next_row = i+1;
                                 r.v_row = 0;
                                 break;
                             }
@@ -897,6 +913,7 @@ public class Resist_multi {
                                 next_row = i;
                                 r.dir_flag = 4; // down
                             }else{
+                                next_row = i-1;
                                 r.v_row = 0;
                                 break;
                             }
@@ -906,6 +923,11 @@ public class Resist_multi {
                     r.row = next_row;
                     grid.recordPos(r);
                 }
+                /*
+                if(r.col == 0){
+                    System.out.printf("%d: run this point, v_col: %d, x_col: %d, now: (%d, %d), dir: %d, pgd: (%d, %d), dif: (%d, %d)\n", r.number, (int)(Math.ceil(r.v_col)), r.x_col, r.col, r.row, r.dir_flag, r.pgd_col, r.pgd_row, dif_col, dif_row);
+                }
+                */
             }
         } else {
             r.v_col = 0;
